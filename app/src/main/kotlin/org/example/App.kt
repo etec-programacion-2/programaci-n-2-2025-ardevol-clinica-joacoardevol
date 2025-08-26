@@ -3,13 +3,40 @@
  */
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+    
+    // Data class para representar a un paciente
+data class Paciente(
+    val dni: String,
+    val nombre: String,
+    val apellido: String
+)
 
 fun main() {
-    println(App().greeting)
+    // Crear una lista mutable para almacenar los pacientes
+    val pacientes = mutableListOf<Paciente>()
+
+    // Función para agregar un nuevo paciente
+    fun agregarPaciente(dni: String, nombre: String, apellido: String) {
+        val nuevoPaciente = Paciente(dni, nombre, apellido)
+        pacientes.add(nuevoPaciente)
+        println("Paciente agregado: $nuevoPaciente")
+    }
+
+    // Función para listar todos los pacientes
+    fun listarPacientes() {
+        if (pacientes.isEmpty()) {
+            println("No hay pacientes registrados.")
+        } else {
+            println("Lista de pacientes:")
+            pacientes.forEach { paciente ->
+                println("DNI: ${paciente.dni}, Nombre: ${paciente.nombre}, Apellido: ${paciente.apellido}")
+            }
+        }
+    }
+
+    // Ejemplo de uso
+    agregarPaciente("12345678A", "Juan", "Pérez")
+    agregarPaciente("87654321B", "María", "Gómez")
+    listarPacientes()
+
 }
