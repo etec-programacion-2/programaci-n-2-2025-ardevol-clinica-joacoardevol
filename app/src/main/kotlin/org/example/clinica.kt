@@ -1,5 +1,7 @@
 package org.example
 
+import java.time.LocalDateTime
+
 class Clinica {
     private val pacientes = mutableListOf<Paciente>()
     private val medicos = mutableListOf<Medico>()
@@ -7,34 +9,40 @@ class Clinica {
 
     fun agregarPaciente(paciente: Paciente) {
         pacientes.add(paciente)
-        println("✅ Paciente agregado: ${paciente.nombre} ${paciente.apellido}")
     }
 
     fun agregarMedico(medico: Medico) {
         medicos.add(medico)
-        println("✅ Médico agregado: ${medico.nombre} ${medico.apellido} (${medico.especialidad})")
     }
 
-    fun asignarTurno(turno: Turno) {
+    fun agregarTurno(turno: Turno) {
         turnos.add(turno)
-        println("✅ Turno asignado: ${turno.id} - Paciente ${turno.paciente.nombre}, Médico ${turno.medico.nombre}")
     }
 
-    fun listarPacientes() {
-        if (pacientes.isEmpty()) println("⚠️ No hay pacientes registrados")
-        else pacientes.forEachIndexed { index, p -> println("${index + 1}. DNI: ${p.dni}, Nombre: ${p.nombre} ${p.apellido}") }
+    fun listarPacientes(): String {
+        return if (pacientes.isEmpty()) "No hay pacientes registrados."
+        else pacientes.joinToString("\n")
     }
 
-    fun listarMedicos() {
-        if (medicos.isEmpty()) println("⚠️ No hay médicos registrados")
-        else medicos.forEachIndexed { index, m -> println("${index + 1}. Matrícula: ${m.matricula}, Nombre: ${m.nombre} ${m.apellido}, Especialidad: ${m.especialidad}") }
+    fun listarMedicos(): String {
+        return if (medicos.isEmpty()) "No hay médicos registrados."
+        else medicos.joinToString("\n")
     }
 
-    fun listarTurnos() {
-        if (turnos.isEmpty()) println("⚠️ No hay turnos registrados")
-        else turnos.forEach { t -> println("ID: ${t.id}, Paciente: ${t.paciente.nombre}, Médico: ${t.medico.nombre}, Fecha: ${t.fechaHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}") }
+    fun listarTurnos(): String {
+        return if (turnos.isEmpty()) "No hay turnos registrados."
+        else turnos.joinToString("\n")
     }
 
     fun obtenerPaciente(index: Int): Paciente? = pacientes.getOrNull(index)
     fun obtenerMedico(index: Int): Medico? = medicos.getOrNull(index)
+    // Datos de prueba (opcional)
+    fun cargarDatosEjemplo() {
+        val paciente = Paciente("12345678", "Juan", "Pérez")
+        val medico = Medico("A001", "Ana", "García", Especialidad.CLINICA)
+        val turno = Turno("1", paciente, medico, LocalDateTime.now())
+        agregarPaciente(paciente)
+        agregarMedico(medico)
+        agregarTurno(turno)
+    }
 }

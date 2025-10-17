@@ -1,6 +1,7 @@
 package org.example
 
-import java.util.Scanner
+import javax.swing.JOptionPane
+import javax.swing.JOptionPane.*
 
 data class Medico(
     val matricula: String,
@@ -8,33 +9,23 @@ data class Medico(
     val apellido: String,
     val especialidad: Especialidad
 ) {
+    override fun toString(): String {
+        return "Médico: $nombre $apellido (Matrícula: $matricula, Especialidad: $especialidad)"
+    }
+
     companion object {
-        fun leerMatricula(): String {
-            val reader = Scanner(System.`in`)
+        fun leerMatriculaGrafico(): String {
             while (true) {
-                print("Ingrese matrícula (solo números): ")
-                val matricula = reader.nextLine()
-                if (matricula.matches(Regex("^\\d+$"))) return matricula
-                println("⚠️ Matrícula inválida. Debe contener solo números.")
+                val input = JOptionPane.showInputDialog("Ingrese matrícula (solo números):")
+                if (input != null && input.matches(Regex("^\\d+$"))) return input
+                JOptionPane.showMessageDialog(null, "⚠️ Matrícula inválida. Debe contener solo números.")
             }
         }
 
-        fun seleccionarEspecialidad(): Especialidad {
-            val reader = Scanner(System.`in`)
-            println("Seleccione especialidad:")
-            Especialidad.values().forEachIndexed { index, esp ->
-                println("${index + 1}. $esp")
-            }
-
-            var opcion: Int
-            while (true) {
-                print("Opción: ")
-                opcion = reader.nextLine().toIntOrNull() ?: -1
-                if (opcion in 1..Especialidad.values().size) break
-                println("⚠️ Opción inválida, intente nuevamente.")
-            }
-
-            return Especialidad.values()[opcion - 1]
+        fun seleccionarEspecialidadGrafico(): Especialidad {
+            val opciones = Especialidad.values().map { it.toString() }.toTypedArray()
+            val seleccion = JOptionPane.showInputDialog(null, "Seleccione especialidad:", "Especialidad", QUESTION_MESSAGE, null, opciones, opciones[0]) as String
+            return Especialidad.valueOf(seleccion.uppercase())
         }
     }
 }

@@ -1,30 +1,30 @@
 package org.example
 
-import java.util.Scanner
+import javax.swing.JOptionPane
 
 data class Paciente(
     val dni: String,
     val nombre: String,
     val apellido: String
 ) {
+    override fun toString(): String {
+        return "Paciente: $nombre $apellido (DNI: $dni)"
+    }
+
     companion object {
-        fun leerDni(): String {
-            val reader = Scanner(System.`in`)
+        fun leerDniGrafico(): String {
             while (true) {
-                print("Ingrese DNI (solo números): ")
-                val dni = reader.nextLine()
-                if (dni.matches(Regex("^\\d+$"))) return dni
-                println("⚠️ DNI inválido. Debe contener solo números.")
+                val input = JOptionPane.showInputDialog("Ingrese DNI (solo números):")
+                if (input != null && input.matches(Regex("^\\d+$"))) return input
+                JOptionPane.showMessageDialog(null, "⚠️ DNI inválido. Debe contener solo números.")
             }
         }
 
-        fun leerNombreOApellido(campo: String): String {
-            val reader = Scanner(System.`in`)
+        fun leerNombreOApellidoGrafico(campo: String): String {
             while (true) {
-                print("Ingrese $campo (sin números): ")
-                val texto = reader.nextLine()
-                if (texto.matches(Regex("^[^\\d]+$"))) return texto
-                println("⚠️ $campo inválido. No debe contener números.")
+                val input = JOptionPane.showInputDialog("Ingrese $campo (sin números):")
+                if (input != null && input.matches(Regex("^[^\\d]+$"))) return input
+                JOptionPane.showMessageDialog(null, "⚠️ $campo inválido. No debe contener números.")
             }
         }
     }

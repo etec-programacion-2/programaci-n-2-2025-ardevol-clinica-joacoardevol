@@ -2,7 +2,7 @@ package org.example
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Scanner
+import javax.swing.JOptionPane
 
 data class Turno(
     val id: String,
@@ -10,17 +10,24 @@ data class Turno(
     val medico: Medico,
     val fechaHora: LocalDateTime
 ) {
+    override fun toString(): String {
+        val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        return "Turno #$id → ${paciente.nombre} ${paciente.apellido} con ${medico.nombre} ${medico.apellido} el ${fechaHora.format(formato)}"
+    }
+
     companion object {
-        fun leerFechaHora(): LocalDateTime {
-            val reader = Scanner(System.`in`)
+        fun leerFechaHoraGrafico(): LocalDateTime {
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
             while (true) {
-                print("Ingrese fecha y hora (formato dd/MM/yyyy HH:mm): ")
-                val input = reader.nextLine()
-                try {
-                    return LocalDateTime.parse(input, formatter)
-                } catch (e: Exception) {
-                    println("⚠️ Formato inválido. Intente nuevamente.")
+                val input = JOptionPane.showInputDialog("Ingrese fecha y hora (formato dd/MM/yyyy HH:mm):")
+                if (input != null) {
+                    try {
+                        return LocalDateTime.parse(input, formatter)
+                    } catch (e: Exception) {
+                        JOptionPane.showMessageDialog(null, "⚠️ Formato inválido. Intente nuevamente.")
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe ingresar una fecha y hora.")
                 }
             }
         }
