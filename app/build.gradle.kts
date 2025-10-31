@@ -29,6 +29,9 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation("com.github.lgooddatepicker:LGoodDatePicker:2.1.20")
+    implementation("com.github.lgooddatepicker:LGoodDatePicker:11.2.1")
+    implementation("com.github.lgooddatepicker:LGoodDatePicker:1.4.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
