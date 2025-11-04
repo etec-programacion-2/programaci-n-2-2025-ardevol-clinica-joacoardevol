@@ -19,7 +19,6 @@ class UIConfig(
 
         configurarBarraSuperior()
         configurarPanelMenu()
-        // No configuramos panel central aquí, PanelManager lo maneja
     }
 
     private fun configurarBarraSuperior() {
@@ -67,7 +66,7 @@ class UIConfig(
             val boton = JButton(texto).apply {
                 maximumSize = Dimension(Int.MAX_VALUE, 44)
                 alignmentX = Component.CENTER_ALIGNMENT
-                background = Color(255, 255, 255)
+                background = Color.WHITE
                 font = Font("Arial", Font.PLAIN, 14)
                 border = BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(Color(220, 220, 220)),
@@ -87,7 +86,7 @@ class UIConfig(
             }
         }
 
-        panelMenu.add(Box.createRigidArea(Dimension(0, 20))) // separación
+        panelMenu.add(Box.createRigidArea(Dimension(0, 20)))
         panelMenu.add(crearBotonLateral("Registrar Paciente") {
             clinica.registrarPacienteGrafico(panelManager)
         })

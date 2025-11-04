@@ -10,20 +10,12 @@ object TurnoRegistrar {
         val pacientesStr = clinica.listarPacientes()
         val pacienteIndexStr = JOptionPane.showInputDialog(menuPrincipal, "Seleccione paciente (número):\n$pacientesStr")
         val pacienteIndex = pacienteIndexStr?.toIntOrNull()?.minus(1) ?: -1
-        val paciente = clinica.obtenerPaciente(pacienteIndex)
-        if (paciente == null) {
-            JOptionPane.showMessageDialog(menuPrincipal, "Paciente inválido")
-            return
-        }
+        val paciente = clinica.obtenerPaciente(pacienteIndex) ?: return
 
         val medicosStr = clinica.listarMedicos()
         val medicoIndexStr = JOptionPane.showInputDialog(menuPrincipal, "Seleccione médico (número):\n$medicosStr")
         val medicoIndex = medicoIndexStr?.toIntOrNull()?.minus(1) ?: -1
-        val medico = clinica.obtenerMedico(medicoIndex)
-        if (medico == null) {
-            JOptionPane.showMessageDialog(menuPrincipal, "Médico inválido")
-            return
-        }
+        val medico = clinica.obtenerMedico(medicoIndex) ?: return
 
         val datePicker = DatePicker().apply { date = java.time.LocalDate.now() }
         val timePicker = TimePicker().apply { isFocusable = true }
@@ -39,53 +31,42 @@ object TurnoRegistrar {
             background = Color.WHITE
         }
 
-        formPanel.add(JLabel("Paciente:").apply { font = Font("Arial", Font.BOLD, 13) })
-        formPanel.add(JLabel("${paciente.nombre} ${paciente.apellido}").apply { font = Font("Arial", Font.PLAIN, 13) })
-        formPanel.add(JLabel("Médico:").apply { font = Font("Arial", Font.BOLD, 13) })
-        formPanel.add(JLabel("${medico.nombre} ${medico.apellido}").apply { font = Font("Arial", Font.PLAIN, 13) })
-        formPanel.add(JLabel("Seleccione Fecha:").apply { font = Font("Arial", Font.BOLD, 13) })
+        formPanel.add(JLabel("Paciente:"))
+        formPanel.add(JLabel("${paciente.nombre} ${paciente.apellido}"))
+        formPanel.add(JLabel("Médico:"))
+        formPanel.add(JLabel("${medico.nombre} ${medico.apellido}"))
+        formPanel.add(JLabel("Seleccione Fecha:"))
         formPanel.add(datePicker)
-        formPanel.add(JLabel("Seleccione Hora:").apply { font = Font("Arial", Font.BOLD, 13) })
+        formPanel.add(JLabel("Seleccione Hora:"))
         formPanel.add(timePicker)
 
         val btnGuardar = JButton("Guardar Turno").apply {
             background = Color(33, 150, 243)
             foreground = Color.WHITE
-            font = Font("Arial", Font.BOLD, 14)
-            border = EmptyBorder(10, 20, 10, 20)
-
             addActionListener {
-                val selectedDate = datePicker.date
-                val selectedTime = timePicker.time
-                if (selectedDate == null || selectedTime == null) {
-                    JOptionPane.showMessageDialog(menuPrincipal, "Debe seleccionar fecha y hora")
-                    return@addActionListener
-                }
-                val fechaHora = java.time.LocalDateTime.of(selectedDate, selectedTime)
-                val id = "T${System.currentTimeMillis()}"
-                clinica.agregarTurno(Turno(id, paciente, medico, fechaHora))
-                JOptionPane.showMessageDialog(menuPrincipal, "✓ Turno registrado exitosamente")
+                val fecha = datePicker.date ?: return@addActionListener
+                val hora = timePicker.time ?: return@addActionListener
+                val fechaHora = java.time.LocalDateTime.of(fecha, hora)
+                val turno = Turno("T${System.currentTimeMillis()}", paciente, medico, fechaHora)
+                clinica.agregarTurno(turno)
+                JOptionPane.showMessageDialog(menuPrincipal, "✅ Turno registrado exitosamente:\n\n$turno")
                 dialog.dispose()
                 panelManager.showTurnos()
+                menuPrincipal.revalidate()
+                menuPrincipal.repaint()
             }
         }
 
-        val btnCancelar = JButton("Cancelar").apply {
-            background = Color(220, 220, 220)
-            foreground = Color(60, 60, 60)
-            font = Font("Arial", Font.PLAIN, 14)
-            border = EmptyBorder(10, 20, 10, 20)
-            addActionListener { dialog.dispose() }
-        }
+        val btnCancelar = JButton("Cancelar").apply { addActionListener { dialog.dispose() } }
 
-        val buttonPanel = JPanel(FlowLayout(FlowLayout.RIGHT, 10, 10)).apply {
+        val panelBotones = JPanel(FlowLayout(FlowLayout.RIGHT, 10, 10)).apply {
             background = Color.WHITE
             add(btnCancelar)
             add(btnGuardar)
         }
 
         dialog.add(formPanel, BorderLayout.CENTER)
-        dialog.add(buttonPanel, BorderLayout.SOUTH)
+        dialog.add(panelBotones, BorderLayout.SOUTH)
         dialog.isVisible = true
     }
 }
