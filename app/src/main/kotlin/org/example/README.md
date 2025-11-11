@@ -24,6 +24,7 @@ OpenJDK Runtime Environment (build 11.0.28+6-post-Ubuntu-1ubuntu124.04.1)
 OpenJDK 64-Bit Server VM (build 11.0.28+6-post-Ubuntu-1ubuntu124.04.1, mixed mode, sharing)
 
 Comandos A seguir para poder abrir el code
+Moverse a la carpeta de ssh: cd .shh
 Clonar repositorio en tu comutadora: git clone git@github.com:etec-programacion-2/programaci-n-2-2025-ardevol-clinica-joacoardevol.git
 Moverse a esa la carpeta: cd programaci-n-2-2025-ardevol-clinica-joacoardevol
 Para hacer que el code funcione: ./gradlew run
